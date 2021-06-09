@@ -1,0 +1,386 @@
+
+----- Some of The Most Important SQL Commands ----------
+
+SELECT - extracts data from a database
+UPDATE - updates data in a database
+DELETE - deletes data from a database
+INSERT INTO - inserts new data into a database
+CREATE DATABASE - creates a new database
+ALTER DATABASE - modifies a database
+CREATE TABLE - creates a new table
+ALTER TABLE - modifies a table
+DROP TABLE - deletes a table
+CREATE INDEX - creates an index (search key)
+DROP INDEX - deletes an index
+
+---------------------------  MYSQL ---------------------------------
+
+select * from tablename;
+select coulmn_name1, coulmn_name2... from tablename;
+select * from table_name where(condition);
+select count(coulmn_name) from table_name;                            				// to count the no of rows
+select * from table_name where(condition(AND,OR,NOT));                				 // condition operator
+select distinct(coulmn_name) from table_name;                          				//  shows distinct rows only   
+SELECT column1, column2, ...FROM table_name NOT condition;         				    //  not condition
+select column1,column2,... from table_name orderby column1 DESC;    			    // by default ASC 
+insert into table_name values(value1,value2,...);
+insert into table_name (column1,column2) values(value1,value2);
+SELECT column_names FROM table_name WHERE column_name IS NULL;          				// (IS NOT NULL)
+UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;			// to modify existing record, if we dont give condition it will update whole column 
+DELETE FROM table_name WHERE condition;                                             // to delete row , if we dont give condition it will delete all records
+DELETE FROM table_name;                                                             // delete all record, but table remains
+
+----- ------------ LIMIT -------------------
+The LIMIT clause is used to specify the number of records to return.
+
+SELECT column_name(s) FROM table_name WHERE condition LIMIT number;
+
+----- MySQL MIN() and MAX() Functions ------
+
+SELECT MIN(column_name) FROM table_name WHERE condition;                     // The MIN() function returns the smallest value of the selected column
+SELECT MAX(column_name) FROM table_name WHERE condition;                     // The MAX() function returns the largest value of the selected column
+
+SELECT MAX(column_name) AS (Temprory coulmn_name) FROM table_name; 
+
+-------  COUNT(), AVG() and SUM() ----------
+
+SELECT COUNT(column_name) FROM table_name WHERE condition;                 // The COUNT() function returns the number of rows that matches a specified criterion.
+SELECT AVG(column_name) FROM table_name WHERE condition;                   // The AVG() function returns the average value of a numeric column. 
+SELECT SUM(column_name) FROM table_name WHERE condition;                   // The SUM() function returns the total sum of a numeric column.
+
+
+------------- LIKE Operator -----------------
+
+The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
+
+There are two wildcards often used in conjunction with the LIKE operator:
+
+The percent sign (%) represents zero, one, or multiple characters
+The underscore sign (_) represents one, single character
+The percent sign and the underscore can also be used in combinations!
+
+SELECT column1, column2, ... FROM table_name WHERE columnN LIKE pattern;         // string should be in ''.
+
+EX - select distinct(city) from station where(City LIKE 'a%'or City LIKE 'e%'or City LIKE 'i%'or City LIKE 'o%'or City LIKE 'u%');
+
+
+------------ RLIKE operator ----------------------
+
+This operator in MySQL is used to performs a pattern match of a string expression against a pattern.
+
+Syntax - SELECT * FROM table_name WHERE column_name RLIKE pattern;
+
+Ex - SELECT DISTINCT city FROM station WHERE city RLIKE '^[aeiouAEIOU].*[aeiouAEIOU]$';
+
+* = Zero or more instances of string preceding it
++ = One or more instances of strings preceding it
+. = Any single character
+? = Match zero or one instances of the strings preceding it.
+^ = caret(^) matches Beginning of string
+$ = End of string
+[abc]= Any character listed between the square brackets
+[^abc]= Any character not listed between the square brackets
+[A-Z]= match any upper case letter.
+[a-z]= match any lower case letter
+[0-9]= match any digit from 0 through to 9.
+[[:<:]]= matches the beginning of words.
+[[:>:]]= matches the end of words.
+[:class:]= matches a character class i.e. [:alpha:] to match letters, [:space:] to match white space, [:punct:] is match punctuations and [:upper:] for upper class letters.
+p1|p2|p3= Alternation; matches any of the patterns p1, p2, or p3
+{n}=   n instances of preceding element
+{m,n}= m through n instances of preceding element
+
+
+-------------- IN Operator  -------------------------
+
+The IN operator allows you to specify multiple values in a WHERE clause.
+The IN operator is a shorthand for multiple OR conditions.
+
+SELECT column_name(s) FROM table_name WHERE column_name IN (value1, value2, ...);
+SELECT column_name(s) FROM table_name WHERE column_name IN (SELECT STATEMENT);
+
+---------------- RIGHT Operator -----------------------
+
+select coulmn_name from table_name where condition order by right(column_name,n);                                 // right will take n letter from right in string and put it in ASC order
+
+---------------- CASE -----------------------------------
+
+select 
+case
+ when A+B<=C OR A+C<=B OR B+C<=A THEN 'Not A Triangle'
+ when A=B and B=C Then 'Equilateral'
+ when A=B OR A=C OR B=C Then 'Isosceles'
+ when A<>B AND B<>C  Then 'Scalene'
+ END tuple
+ from TRIANGLES;
+ 
+------------------------BETWEEN Operator--------------------------
+The BETWEEN operator selects values within a given range. The values can be numbers, text, or dates.
+
+SELECT column_name(s) FROM table_name WHERE column_name BETWEEN value1 AND value2;
+
+------------------------ INNER JOIN -----------------------------
+
+The INNER JOIN keyword selects records that have matching values in both tables.
+
+SELECT table_name.column_name,.... FROM table1 INNER JOIN table2 ON table1.column_name = table2.column_name;
+
+----------------------- LEFT JOIN ---------------------------------
+
+The LEFT JOIN keyword returns all records from the left table (table1), and the matching records from the right table (table2). 
+The result is 0 records from the right side, if there is no match.
+
+SELECT table_name.column_name,... FROM table1 LEFT JOIN table2 ON table1.column_name = table2.column_name;
+
+----------------------- RIGHT JOIN ---------------------------------
+
+The RIGHT JOIN keyword returns all records from the right table (table2), and the matching records from the left table (table1). 
+The result is 0 records from the left side, if there is no match.
+
+SELECT table_name.column_name,... FROM table1 RIGHT JOIN table2 ON table1.column_name = table2.column_name;
+
+
+----------------------- FULL OUTER JOIN -----------------------------
+
+The FULL OUTER JOIN keyword returns all records when there is a match in left (table1) or right (table2) table records.
+
+SELECT table_name.column_name,... FROM table1 FULL OUTER JOIN table2 ON table1.column_name = table2.column_name;
+
+-----------------------Self Join -----------------------------------
+
+A self join is a regular join, but the table is joined with itself.
+
+SELECT column_name(s) FROM table1 T1, table1 T2 WHERE condition;
+
+
+T1 and T2 are different table aliases for the same table.
+
+----------------------- UNION Operator -------------------------------
+
+The UNION operator is used to combine the result-set of two or more SELECT statements.
+
+Every SELECT statement within UNION must have the same number of columns
+The columns must also have similar data types
+The columns in every SELECT statement must also be in the same order
+Return only distinct values from the tables and "UNION All" will return duplicate value also
+
+SELECT column_name(s) FROM table1 UNION SELECT column_name(s) FROM table2;
+
+------------------------- GROUP BY -----------------------------------
+
+The GROUP BY statement groups rows that have the same values into summary rows, like "find the number of customers in each country".
+The GROUP BY statement is often used with aggregate functions (COUNT(), MAX(), MIN(), SUM(), AVG()) to group the result-set by one or more columns.
+
+SELECT column_name(s) FROM table_name WHERE condition GROUP BY column_name(s)
+
+------------------------HAVING Clause --------------------------------
+
+The HAVING clause was added to SQL because the WHERE keyword cannot be used with aggregate functions.
+
+SELECT column_name(s) FROM table_name WHERE condition GROUP BY column_name(s) HAVING condition;
+
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country HAVING COUNT(CustomerID) > 5;
+
+----------------------- EXISTS Operator -------------------------------
+
+The EXISTS operator is used to test for the existence of any record in a subquery.
+The EXISTS operator returns TRUE if the subquery returns one or more records.
+
+SELECT SupplierName FROM Suppliers
+WHERE EXISTS (SELECT ProductName FROM Products WHERE Products.SupplierID = Suppliers.supplierID AND Price < 20);
+
+----------------------- INSERT INTO SELECT -------------------------------
+
+The INSERT INTO SELECT statement copies data from one table and inserts it into another table.
+The INSERT INTO SELECT statement requires that the data types in source and target tables matches.
+Note: The existing records in the target table are unaffected.
+
+INSERT INTO table2 SELECT * FROM table1 WHERE condition;
+
+
+
+
+
+
+------------------------------------------------------------------- MySQL Database --------------------------------------------------------------
+
+CREATE DATABASE databasename;
+DROP DATABASE databasename;
+
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+   ....
+);
+
+DROP TABLE table_name;
+ALTER TABLE table_name ADD column_name datatype;
+ALTER TABLE table_name DROP COLUMN column_name;
+ALTER TABLE table_name MODIFY COLUMN column_name datatype;
+
+-------------------------------------------------------------------------------
+NOT NULL Constraint:
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    Age int
+);
+ALTER TABLE Persons MODIFY Age int NOT NULL;
+
+--------------------------------------------------------------------------------
+UNIQUE Constraint:
+
+The UNIQUE constraint ensures that all values in a column are different.
+Both the UNIQUE and PRIMARY KEY constraints provide a guarantee for uniqueness for a column or set of columns.
+A PRIMARY KEY constraint automatically has a UNIQUE constraint.
+However, you can have many UNIQUE constraints per table, but only one PRIMARY KEY constraint per table.
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    UNIQUE (ID)
+);
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CONSTRAINT UC_Person UNIQUE (ID,LastName)
+);
+
+ALTER TABLE Persons ADD UNIQUE (ID);
+ALTER TABLE Persons ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+
+--------------------------------------------------------------------------------
+PRIMARY KEY Constraint:
+
+The PRIMARY KEY constraint uniquely identifies each record in a table.
+Primary keys must contain UNIQUE values, and cannot contain NULL values.
+A table can have only ONE primary key; and in the table, this primary key can consist of single or multiple columns (fields).
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CONSTRAINT PK_Person PRIMARY KEY (ID,LastName)
+);
+
+ALTER TABLE Persons ADD PRIMARY KEY (ID);
+ALTER TABLE Persons ADD CONSTRAINT PK_Person PRIMARY KEY (ID,LastName);
+ALTER TABLE Persons DROP PRIMARY KEY;
+
+--------------------------------------------------------------------------------------
+
+FOREIGN KEY Constraint:
+
+The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
+A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
+The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
+The FOREIGN KEY constraint prevents invalid data from being inserted into the foreign key column, because it has to be one of the values
+contained in the parent table.
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
+    REFERENCES Persons(PersonID)
+);
+
+ALTER TABLE Orders ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+ALTER TABLE Orders ADD CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+ALTER TABLE Orders DROP FOREIGN KEY FK_PersonOrder;
+
+----------------------------------------------------------------------------------
+
+CHECK Constraint:
+
+The CHECK constraint is used to limit the value range that can be placed in a column.
+If you define a CHECK constraint on a column it will allow only certain values for this column.
+If you define a CHECK constraint on a table it can limit the values in certain columns based on values in other columns in the row.
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CHECK (Age>=18)
+);
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255),
+    CONSTRAINT CHK_Person CHECK (Age>=18 AND City='Sandnes')
+);
+
+ALTER TABLE Persons ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Sandnes');
+ALTER TABLE Persons DROP CHECK CHK_PersonAge;
+
+----------------------------------------------------------------------------------
+
+DEFAULT Constraint:
+
+The DEFAULT constraint is used to set a default value for a column.
+The default value will be added to all new records, if no other value is specified.
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255) DEFAULT 'Sandnes'
+);
+
+The DEFAULT constraint can also be used to insert system values, by using functions like CURRENT_DATE():
+
+CREATE TABLE Orders (
+    ID int NOT NULL,
+    OrderNumber int NOT NULL,
+    OrderDate date DEFAULT CURRENT_DATE()
+);
+
+ALTER TABLE Persons ALTER City SET DEFAULT 'Sandnes';
+ALTER TABLE Persons ALTER City DROP DEFAULT;
+
+----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
