@@ -1,0 +1,52 @@
+
+---------------Fibonaci series -------------------
+O/P - 0,1,1,2,3,5,8,13.......
+
+ class Program
+    {
+        static void Main(string[] args)
+        {
+            int p1 = 0, p2 = 1, p3;
+            Console.WriteLine("Enter Input value");
+            int count = Int32.Parse(Console.ReadLine());
+            Console.Write(p1 + " " + p2);
+            for(int i=2;i<count;i++)
+            {
+                p3 = p1 + p2;
+                Console.Write(" " + p3);
+                p1 = p2;
+                p2 = p3;
+            }
+            Console.ReadLine();
+
+        }
+    }
+
+
+---------------Reverse a number -----------------------
+
+public class Solution {
+    public int Reverse(int x) {
+        
+        int rev=0;
+        while(x!=0)
+        {
+           int digit = x % 10;
+            int temp= rev *10;
+            if(temp/10 != rev)          
+                return 0;
+            
+            temp += digit;
+            rev=temp;
+            x=x/10;
+        }
+        
+        return rev;
+    }
+}
+
+--------------
+
+
+
+  
